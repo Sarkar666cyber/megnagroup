@@ -241,3 +241,18 @@ link.classList.add("active");
 });
 
 });
+// MOBILE MENU
+const menuBtn = document.querySelector(".menu-btn");
+const nav = document.querySelector("nav");
+
+if (menuBtn && nav) {
+    menuBtn.addEventListener("click", () => {
+        nav.classList.toggle("mobile-open");
+    });
+
+    nav.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
+            nav.classList.remove("mobile-open");
+        });
+    });
+}
