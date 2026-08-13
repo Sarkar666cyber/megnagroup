@@ -11,12 +11,9 @@ const loader=document.querySelector("#loader");
 window.addEventListener("load",()=>{
 
 setTimeout(()=>{
-
-loader.style.opacity="0";
-
-loader.style.visibility="hidden";
-
-},1500);
+    loader.style.opacity="0";
+    loader.style.visibility="hidden";
+},500);
 
 });
 
