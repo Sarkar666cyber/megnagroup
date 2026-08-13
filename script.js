@@ -6,16 +6,21 @@ Luxury Portfolio
 
 //===========================
 
-const loader=document.querySelector("#loader");
+const loader = document.querySelector("#loader");
 
-window.addEventListener("load",()=>{
+function hideLoader() {
+    if (!loader) return;
 
-setTimeout(()=>{
-    loader.style.opacity="0";
-    loader.style.visibility="hidden";
-},500);
+    loader.style.opacity = "0";
+    loader.style.visibility = "hidden";
+    loader.style.pointerEvents = "none";
+}
 
+document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(hideLoader, 400);
 });
+
+setTimeout(hideLoader, 3000);
 
 
 //===========================
