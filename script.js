@@ -10,14 +10,20 @@ Luxury Portfolio
 
 const loader = document.querySelector("#loader");
 
-window.addEventListener("load", () => {
-    setTimeout(() => {
-        if (loader) {
-            loader.style.opacity = "0";
-            loader.style.visibility = "hidden";
-        }
-    }, 1500);
+function hideLoader() {
+    if (!loader) return;
+
+    loader.style.opacity = "0";
+    loader.style.visibility = "hidden";
+    loader.style.pointerEvents = "none";
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(hideLoader, 400);
 });
+
+// Safety: loader kabhi permanently stuck na ho
+setTimeout(hideLoader, 3000);
 
 
 // ===========================
