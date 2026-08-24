@@ -4,9 +4,7 @@ Luxury Portfolio
 =========================================*/
 
 
-// ===========================
-// LOADER
-// ===========================
+//===========================
 
 const loader = document.querySelector("#loader");
 
@@ -22,365 +20,241 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(hideLoader, 400);
 });
 
-// Safety: loader kabhi permanently stuck na ho
 setTimeout(hideLoader, 3000);
 
 
-// ===========================
-// SCROLL PROGRESS BAR
-// ===========================
+//===========================
 
-const progress = document.getElementById("progressBar");
+const progress=document.getElementById("progressBar");
 
-window.addEventListener("scroll", () => {
+window.addEventListener("scroll",()=>{
 
-    if (!progress) return;
+let winScroll=document.documentElement.scrollTop;
 
-    const winScroll = document.documentElement.scrollTop;
-    const height =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
+let height=document.documentElement.scrollHeight-document.documentElement.clientHeight;
 
-    const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+let scrolled=(winScroll/height)*100;
 
-    progress.style.width = scrolled + "%";
+progress.style.width=scrolled+"%";
+
 });
+const typing=document.getElementById("typing");
 
+const words=[
 
-// ===========================
-// TYPING EFFECT
-// ===========================
+"Graphic Designer",
 
-const typing = document.getElementById("typing");
+"Meta Ads Expert",
 
-const words = [
-    "Graphic Designer",
-    "Meta Ads Expert",
-    "Shopify Designer",
-    "Creative Director"
+"Shopify Designer",
+
+"Creative Director"
+
 ];
 
-let wordIndex = 0;
-let letterIndex = 0;
-let remove = false;
+let wordIndex=0;
 
-function type() {
+let letterIndex=0;
 
-    if (!typing) return;
+let remove=false;
 
-    const current = words[wordIndex];
+function type(){
 
-    if (!remove) {
+let current=words[wordIndex];
 
-        typing.textContent = current.substring(0, letterIndex++);
+if(!remove){
 
-        if (letterIndex > current.length) {
+typing.textContent=current.substring(0,letterIndex++);
 
-            remove = true;
+if(letterIndex>current.length){
 
-            setTimeout(type, 1300);
+remove=true;
 
-            return;
-        }
+setTimeout(type,1300);
 
-    } else {
+return;
 
-        typing.textContent = current.substring(0, letterIndex--);
+}
 
-        if (letterIndex < 0) {
+}
 
-            remove = false;
+else{
 
-            wordIndex++;
+typing.textContent=current.substring(0,letterIndex--);
 
-            if (wordIndex >= words.length) {
-                wordIndex = 0;
-            }
-        }
-    }
+if(letterIndex<0){
 
-    setTimeout(type, 100);
+remove=false;
+
+wordIndex++;
+
+if(wordIndex>=words.length){
+
+wordIndex=0;
+
+}
+
+}
+
+}
+
+setTimeout(type,100);
+
 }
 
 type();
+const cursor=document.querySelector(".cursor");
 
+document.addEventListener("mousemove",(e)=>{
 
-// ===========================
-// CUSTOM CURSOR
-// ===========================
+cursor.style.left=e.clientX+"px";
 
-const cursor = document.querySelector(".cursor");
+cursor.style.top=e.clientY+"px";
 
-if (cursor) {
+});
+const lenis=new Lenis({
 
-    document.addEventListener("mousemove", (e) => {
+duration:1.4,
 
-        cursor.style.left = e.clientX + "px";
-        cursor.style.top = e.clientY + "px";
+smoothWheel:true
 
-    });
+});
+
+function raf(time){
+
+lenis.raf(time);
+
+requestAnimationFrame(raf);
+
 }
 
+requestAnimationFrame(raf);
+gsap.from(".hero-left",{
 
-// ===========================
-// LENIS SMOOTH SCROLL
-// ===========================
+y:120,
 
-if (typeof Lenis !== "undefined") {
+opacity:0,
 
-    const lenis = new Lenis({
-        duration: 1.4,
-        smoothWheel: true
-    });
+duration:1.4,
 
-    function raf(time) {
+ease:"power4.out"
 
-        lenis.raf(time);
+});
 
-        requestAnimationFrame(raf);
-    }
+gsap.from(".portrait-card",{
 
-    requestAnimationFrame(raf);
+x:150,
+
+opacity:0,
+
+duration:1.8,
+
+delay:.4,
+
+ease:"expo.out"
+
+});
+gsap.utils.toArray("section").forEach(sec=>{
+
+gsap.from(sec,{
+
+opacity:0,
+
+y:120,
+
+duration:1,
+
+scrollTrigger:{
+
+trigger:sec,
+
+start:"top 80%"
+
 }
 
+});
 
-// ===========================
-// GSAP ANIMATIONS
-// ===========================
+});
+document.querySelectorAll(".hero-stats h3").forEach(counter=>{
 
-if (typeof gsap !== "undefined") {
+let target=parseInt(counter.innerText);
 
-    gsap.from(".hero-left", {
-        y: 120,
-        opacity: 0,
-        duration: 1.4,
-        ease: "power4.out"
-    });
+let count=0;
 
-    gsap.from(".portrait-card", {
-        x: 150,
-        opacity: 0,
-        duration: 1.8,
-        delay: 0.4,
-        ease: "expo.out"
-    });
+let speed=target/100;
 
-    if (typeof ScrollTrigger !== "undefined") {
+let update=()=>{
 
-        gsap.utils.toArray("section").forEach(sec => {
+count+=speed;
 
-            gsap.from(sec, {
-                opacity: 0,
-                y: 120,
-                duration: 1,
-                scrollTrigger: {
-                    trigger: sec,
-                    start: "top 80%"
-                }
-            });
+if(count<target){
 
-        });
-    }
+counter.innerText=Math.floor(count)+"+";
+
+requestAnimationFrame(update);
+
 }
 
+else{
 
-// ===========================
-// HERO STATS COUNTER
-// ===========================
+counter.innerText=target+"+";
 
-document.querySelectorAll(".hero-stats h3").forEach(counter => {
+}
 
-    let target = parseInt(counter.innerText);
+}
 
-    if (isNaN(target)) return;
+update();
 
-    let count = 0;
-    let speed = target / 100;
+});
+const sections=document.querySelectorAll("section");
 
-    function update() {
+const navLinks=document.querySelectorAll("nav a");
 
-        count += speed;
+window.addEventListener("scroll",()=>{
 
-        if (count < target) {
+let current="";
 
-            counter.innerText = Math.floor(count) + "+";
+sections.forEach(sec=>{
 
-            requestAnimationFrame(update);
+const top=window.scrollY;
 
-        } else {
+const offset=sec.offsetTop-150;
 
-            counter.innerText = target + "+";
+const height=sec.offsetHeight;
 
-        }
-    }
+if(top>=offset && top<offset+height){
 
-    update();
+current=sec.getAttribute("id");
+
+}
 
 });
 
+navLinks.forEach(link=>{
 
-// ===========================
-// ACTIVE NAVIGATION
-// ===========================
+link.classList.remove("active");
 
-const sections = document.querySelectorAll("section");
-const navLinks = document.querySelectorAll("nav a");
+if(link.getAttribute("href")=="#"+current){
 
-window.addEventListener("scroll", () => {
+link.classList.add("active");
 
-    let current = "";
-
-    sections.forEach(sec => {
-
-        const top = window.scrollY;
-        const offset = sec.offsetTop - 150;
-        const height = sec.offsetHeight;
-
-        if (
-            top >= offset &&
-            top < offset + height
-        ) {
-
-            current = sec.getAttribute("id");
-
-        }
-    });
-
-    navLinks.forEach(link => {
-
-        link.classList.remove("active");
-
-        if (
-            link.getAttribute("href") === "#" + current
-        ) {
-
-            link.classList.add("active");
-
-        }
-
-    });
+}
 
 });
 
+});
+// MOBILE MENU
+const menuBtn = document.querySelector(".menu-btn");
+const nav = document.querySelector("nav");
 
-// ==================================================
-// PORTFOLIO CATEGORY FILTER
-// ==================================================
+if (menuBtn && nav) {
+    menuBtn.addEventListener("click", () => {
+        nav.classList.toggle("mobile-open");
+    });
 
-const portfolioFilters =
-    document.querySelectorAll(".portfolio-filter button");
-
-const portfolioItems =
-    document.querySelectorAll(".portfolio-item");
-
-
-portfolioFilters.forEach(button => {
-
-    button.addEventListener("click", () => {
-
-        const filter =
-            button.getAttribute("data-filter");
-
-
-        // Remove active from all buttons
-        portfolioFilters.forEach(btn => {
-            btn.classList.remove("active");
+    nav.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
+            nav.classList.remove("mobile-open");
         });
-
-
-        // Add active to clicked button
-        button.classList.add("active");
-
-
-        // Show / hide projects
-        portfolioItems.forEach(item => {
-
-            if (
-                filter === "all" ||
-                item.classList.contains(filter)
-            ) {
-
-                item.style.display = "";
-
-                // Small animation
-                item.style.opacity = "0";
-
-                setTimeout(() => {
-                    item.style.opacity = "1";
-                }, 50);
-
-            } else {
-
-                item.style.display = "none";
-
-            }
-
-        });
-
     });
-
-});
-
-
-// ==================================================
-// PORTFOLIO SAMPLE IMAGE OPEN
-// ==================================================
-
-portfolioItems.forEach(item => {
-
-    const link =
-        item.querySelector(".portfolio-overlay a");
-
-    const image =
-        item.querySelector("img");
-
-
-    if (link && image) {
-
-        const imageSource =
-            image.getAttribute("src");
-
-
-        if (imageSource) {
-
-            link.href = imageSource;
-
-            link.target = "_blank";
-
-            link.rel = "noopener noreferrer";
-
-        }
-
-    }
-
-});
-
-
-// ==================================================
-// SMOOTH SCROLL FOR PORTFOLIO NAVIGATION
-// ==================================================
-
-document.querySelectorAll('a[href^="#"]').forEach(link => {
-
-    link.addEventListener("click", function(e) {
-
-        const targetId =
-            this.getAttribute("href");
-
-        const target =
-            document.querySelector(targetId);
-
-        if (target) {
-
-            e.preventDefault();
-
-            target.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
-
-        }
-
-    });
-
-});
+}
